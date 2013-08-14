@@ -1,0 +1,18 @@
+    // ====================================================================   
+    // frankly.core.scss
+    // Extending SCSS build-in functions 
+    // http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html
+    // 
+    // Note!- Must be gereric and without framework dependencies
+    // ==================================================================== 
+    
+    // Functions for handling SCSS lists 
+    @import '_frankly.core.list.scss';
+    
+    
+    // Functions for converting units
+    @import '_frankly.core.unit.scss';
+    
+    
+
+    

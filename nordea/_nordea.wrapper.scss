@@ -1,0 +1,43 @@
+	// ========================================================
+	// Nordea wrapper 
+	// _nordea.wrapper.scss 
+	// 
+	// To avoid conflict with Nordea CSS - we wrap everything 
+	// but variables, functions and framework imports using the 
+	// Nordea mixin. Pass the content wrapper id as parameter. 
+	// 
+	// Example:
+	// 		@include Nordea('#app'){
+	// 			%SCSSSyntaxHighlightFix{}; 
+	// 			....
+	// 		}
+	// 
+	// ========================================================
+	@mixin Nordea($wrapper){
+		.normalBoxWidth_525  { 
+			width:auto !important; 
+			max-width:auto !important; 
+		}
+			#{$wrapper}{ 
+			* { margin:0; padding:0; z-index:1; outline:none; list-style:none; text-decoration:none; 
+				-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+				-webkit-font-smoothing: antialiased; font-smoothing: antialiased; 
+			}
+			article,aside,details,figcaption,figure, footer,header,hgroup,img,menu,nav,section { display:block; border:none; }
+			li { background:none; }		
+			@content;// Add  
+		}
+	}
+
+
+	// // CSS Browserhack (conditional comments syntax)
+	// // - http://browserhacks.com
+	// $lt_IE_8:lt_IE_8;   // 6+7
+	// $IE_8:IE_8;         // 8
+	// $lt_IE_9:lt_IE_9;   // 6+7+8 
+	// @mixin browserhack($cond){
+	// 	@if($cond==$IE_8){ @media \0screen {@content} }
+	// 	@if($cond==$lt_IE_8){ @media screen\9 {@content} }
+	// 	@if($cond==$lt_IE_9){ @media \0screen\,screen\9 {@content} }
+	// }
+

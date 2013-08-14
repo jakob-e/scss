@@ -1,0 +1,40 @@
+	// ========================================================
+	// Nordea Controls
+	// _nordea.controls.scss
+	// ========================================================
+	%nordea-button-shadow {
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.40); -moz-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.40); -webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.40); 
+ 		// filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=5, OffY=5, Color='gray');
+	}
+	%nordea-button-rounded      { -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px;}
+    %nordea-button-text-shadow  { text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.10); -moz-text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.10);  -webkit-text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.10); }
+    %nordea-button-normal  { display:inline-block; padding:0 15px; font:15px/35px FontStack(Arial); color:$white;} 
+    %nordea-button-big     { display:inline-block; padding:0 25px; font:20px/40px FontStack(Arial); color:$white;} 
+
+	%nordea-button {
+		position:relative; border:0; -webkit-appearance: none; z-index:200;
+		cursor:pointer; 	
+		// @extend %rounded3; 
+		@extend %nordea-button-shadow; 
+		@extend %nordea-button-text-shadow;
+		@extend %nordea-button-normal;
+		@extend %nordea-button-rounded 
+	}
+
+	%nordea-button-orange { 
+		@extend %nordea-button; 
+		@extend %nordea-gradient-orange; 
+		&:hover { @extend %nordea-gradient-orange-reversed; };
+	}
+
+	%nordea-button-blue { 
+		@extend %nordea-button; 
+		@extend %nordea-gradient-blue; 
+		&:hover { @extend %nordea-gradient-blue-reversed; };
+	}	
+
+	%nordea-button-cta { 
+		@extend %nordea-button-orange;
+		@extend %nordea-button-big;
+		background-clip: padding-box;
+	}

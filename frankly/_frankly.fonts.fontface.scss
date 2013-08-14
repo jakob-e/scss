@@ -1,0 +1,135 @@
+    // ====================================================================   
+    // frankly.fontface
+  	// ==================================================================== 
+    @mixin FontFace($family, $src:null, $fontstack:null){
+		$src:if($src, $src, $family);
+		@font-face {
+			font-family:$family;	
+			src: url($src +'.eot', $TYPE_FONT);
+			src: url($src +'.eot?#iefix', $TYPE_FONT) format('embedded-opentype'),
+	    		 url($src +'.woff', $TYPE_FONT) format('woff'),
+	     		 url($src +'.ttf', $TYPE_FONT) format('truetype'),
+	     		 url($src +'.svg#'+ $family, $TYPE_FONT) format('svg');
+			font-weight: 400;
+			font-style: normal;	
+		}
+		// Create fontstack - if passed
+		@if($fontstack){
+			@include FontStack($family,($family,$fontstack))
+		};
+	}
+
+
+
+
+
+	// // @function ($list,$sep){
+	// // 	$str:'';@for $i from 1 through length($list){@if($i>1){$str:$str+$sep+nth($list,$i);} @else{$str:nth($list,$i);};} @return $str;
+	// // }
+
+	// // (name,serif,weights,subset or characters)
+
+
+	// // Creates a string from a list using $s as seperator
+	// // Eg. 	joinAsString(foo bar,'+') returns foo+bar
+	// @function joinAsString($l,$s){
+	// 	$rtv:'';@for $i from 1 through length($l){@if($i==1){$rtv:nth($l,$i);}@else{$rtv:$rtv+$s+nth($l,$i);}}		
+	// 	@return $rtv;
+	// }
+
+
+	// @mixin GoogleFont($fonts...){
+	// 	$spec:();
+	// 	$qstr:'family=';
+	// 	// $fonts:join($fonts,$f,'comma');
+	// 	// $fonts:if(length($fonts)==1 and type-of($fonts)==list,nth($fonts,1),$fonts);
+	// 	@for $i from 1 through length($fonts){
+
+
+	// 		$fnt:nth($fonts,$i);
+	// 		$a:unquote(nth($fnt,1)+'');
+			
+
+	// 		// .type { type:type-of($a);}
+	// 		@if(type-of($a)==string){
+	// 			$a:unquote($a);
+	// 		}
+
+	// 		//$a:();
+	// 		//$a:append($a,nth($fnt,1));	
+	// 		// $a:if(type-of($a)==string,($a,null),$a);
+
+	// 		@if($i>1){$qstr:$qstr+'|';}// Seperate fonts
+			
+	// 		// .value { A:type-of($a);}
+	// 		$qstr:$qstr+joinAsString(unquote($a),'+');
+	// 		// $qstr:$qstr + '' + nth($fnt,1);
+	// 	// // 	@if(length($fnt)==4){ $spec:append($spec,$fnt); // Add to special import
+	// 	// //	} @else {
+	// 	// 	@if(length($fnt)==1){$a:nth($fnt,1);};
+	// 	// 	@if(length($fnt)==2){$b:nth($fnt,2);};
+	// 	// 	@if(length($fnt)==3){$c:nth($fnt,3);};				
+	// 	// 		// $a:if(length($fnt)==1,nth($fnt,1),false);// family
+	// 	// 		// $b:if(length($fnt)==2,nth($fnt,2),false);// stack/weight
+	// 	// 		// $c:if(length($fnt)==3,nth($fnt,3),false);// weights
+				
+
+	// 	// 		// 
+	// 	// 		@if($i>1){$qstr:$qstr+'|';}
+
+	// 	// 		@if($b==null){
+	// 	// 			// No stack or weights
+	// 	// 			// $qstr:$qstr+joinAsString($a,'+');
+	// 	// 		} @else {
+	// 	// 			// weights or stack
+	// 	// 			$qstr:$qstr+joinAsString($a,'+'); 
+	// 	// 		}
+	// 	// 		// @if(type-of($b)==string){
+	// 	// 		// 	$qstr:$qstr+joinAsString($a,'+');
+	// 	// 		// } @else {// weights
+	// 	// 		// 	$qstr:$qstr+joinAsString($a,'+')+':'+joinAsString($b,',');
+	// 	// 		// }
+
+	// 	// 		//
+	// 	} 
+
+	// 	// }
+	// 	.fooo{ len:length($fonts);font:$qstr }
+
+	// 	// .foo{hey:$lists}
+	// };
+
+	// // @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700);
+
+	// // @mixin GoogleFont($name,$weights:null){
+
+
+	// // 	$GoogleFonts:(
+	// // 		(name,serif,weights,subset or characters)
+	// // 		);
+
+	// // 	$qstr:'family=';
+	// // 	@for $i from 1 through length($name){
+	// // 		@if($i==1){$qstr:nth($name,$i);}
+	// // 		@else{$qstr:$qstr+'+'+nth($name,$i);} 
+	// // 	} 
+	// // 	@if($weights!=null){
+	// // 		$qstr:$qstr+':';
+	// // 		@for $i from 1 through length($weights){
+	// // 			@if($i==1){$qstr:$qstr+nth($weights,$i);}
+	// // 			@else{$qstr:$qstr+','+nth($weights,$i);}				
+	// // 		}
+	// // 	}
+	// // 	@import url('http://fonts.googleapis.com/css?family='+$qstr,$TYPE_URL);
+	// // 	// $ff:'';
+	// // 	// @for $i from 1 through length($name){
+	// // 	// 	@if($i==1){$ff:nth($name,$i);}
+	// // 	// 	@else{$ff:$ff+'+'+nth($name,$i);} 
+	// // 	// } 
+	// // 	// @if($weights){
+
+	// // 	// }
+	// // 	// #{@include url("http://fonts.googleapis.com/css?family=foo+bar",0)}{};
+		
+	// // 	// .foobar { font:$ff;}
+	// // };

@@ -1,0 +1,112 @@
+	// =========================================================
+	// UI
+	// =========================================================
+	// 
+	//
+	// 	$('input,select,textarea').each(function(){
+	// 		var $tgt=$(this),type=$tgt.attr('type'),name=$tgt.attr('name'),tag=$tgt[0].tagName.toLowerCase();
+	// 		$wrp=$tgt.closest('.ui');
+	// 		type=(tag=='select' || tag=='textarea')?tag:type;
+	// 		$tgt.wrap('<div class="ui ui-'+type+'"/>').after('<div data-ui />');
+	// 		if(type=='button'||type=='submit'){$tgt.next().attr('data-ui',$tgt.val());}
+	// 		if(type=='select'){$tgt.on('change init',function(){
+	// 			var $tgt=$(this);
+	// 			$tgt.next().attr('data-ui',$(':selected',$tgt).text());
+	// 		}).trigger('init');}
+	// });	
+
+
+	@mixin UI(){
+		.ui { 
+			&:after {content:'';display:table;clear:both;}
+			position:relative; display:table; width:auto;
+			
+		
+			// float => Allow sizing
+			[data-ui]{
+				float:left;margin-right:-100%;
+				&:after{content:attr(data-ui);overflow:hidden;white-space:nowrap;display:block;}	
+
+				// Disable ui text selection
+			  	-webkit-touch-callout:none; // iOS
+	  			  -webkit-user-select:none;  
+	  			     -moz-user-select:none;     
+	  				  -ms-user-select:none;    
+	  				      user-select:none;    
+
+			}
+
+			// size to fit 
+			// position => sizing and z-index
+			// background note! transparent is not enough 
+			// when hiding selects in eg. FF
+			input,select,textarea{   
+				width:100%;height:100%;position:absolute;z-index:1;left:0; 
+			    -webkit-appearance:none;
+			    border:none; 
+				outline:none; 
+				background:none; 
+			}
+
+			// Hide selects, radios and checkboxes
+			select,[type=radio],[type=checkbox],[type=range],[type=submit],[type=button],[type=file]{opacity:0;filter:alpha(opacity=0);cursor:pointer;}
+			// & *:disabled{cursor:auto}
+
+			// ie make transparent background trigger 
+			[type=submit],[type=button]{font-size:999em;}
+
+			// Turn off number input spinners
+			input[type=number]::-webkit-inner-spin-button, 
+			input[type=number]::-webkit-outer-spin-button { 
+					-webkit-appearance: none; margin: 0; 
+			}	
+
+			// Required marker 
+			[required]+[data-ui]:before{ content:'*';font-size:16px;left:-10px;position:absolute}
+
+
+			// Hide placeholder text	
+			// For some odd reason we need to specify color on an individual level
+			:focus::-webkit-input-placeholder{color:transparent;} // iOS
+			::-webkit-input-placeholder{color:transparent;}
+			::-moz-placeholder{color:transparent;}
+			:-moz-placeholder{color:transparent;}
+			:-ms-input-placeholder{color:transparent;}	
+
+
+
+		}
+		// ie force state render 
+		// ... if not adding classes prior to input:state will not work 		
+		input,select,textarea{&:hover,&:focus,&:checked,&:disabled{zoom:1;}}
+
+
+
+
+		// input:invalid + [data-ui]::before { content: ' ⨉'; }
+		// input:valid + [data-ui]::after { content: ' ✓'; }
+	}
+
+
+
+	@mixin ui($args...){
+		$target:default;
+		$states:unquote('');
+		// Converts list arguments into part of the arguments list
+		// Example: 
+		// (disabled,checked focus,hover) becomes (disabled,checked,focus,hover)
+		$arglist:list();
+		@for $i from 1 through length($args){ $arglist:if(type-of(nth($args,$i))==list, join($arglist, nth($args,$i)), append($arglist,nth($args,$i))); }
+		@for $i from 1 through length($arglist){ 
+			$arg:nth($arglist,$i);
+			@if($arg!=default and $arg!=input and $arg!=text and $arg!=marker and $arg!=required and $arg!=placeholder){ $states:unquote($states+':'+$arg); }
+			@else { $target:unquote($arg); }	
+		} 
+		@if($target==default) {  *#{$states}+[data-ui]{ @content; } }
+		@if($target==input)   { 
+			// [input]#{$states}+[data-ui]{ @content; } 
+			input { @content; } 
+		}
+		@if($target==required){ [required]#{$states}+[data-ui]:before { @content;} }
+		@if($target==text or $target==marker) {  *#{$states}+[data-ui]:after { @content;} }
+	}

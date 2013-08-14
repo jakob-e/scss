@@ -1,0 +1,136 @@
+    // ====================================================================   
+    // frankly.grid.scss
+  	// ====================================================================
+  	// Config 
+  	$grid-width:940 !default;
+  	$grid-gutter:20  !default;
+  	$grid-columns:12  !default;
+  	$grid-responsive:true  !default;
+  	$grid-column-index:1  !default;
+  	$grid-default-name:main  !default;
+	$grid-padding:0  !default;
+  	$grid-padding-left:0  !default;
+  	$grid-padding-right:0  !default;
+  	$grids:list() !default;
+	$grid-only-run-once:false;
+
+	// Constructor
+	@mixin Grid(){
+
+		// Only run once (prevent multiple instantiations)
+		@if($grid-only-run-once==false){
+			$grid-only-run-once:true;
+
+	     	// Pixel base values
+			$grid-pad-tot-width:$grid-padding-left + $grid-padding-right;				// Total width of padding
+			$grid-gut-tot-width:$grid-gutter * ($grid-columns - 1);						// Total width of gutters
+	  		$grid-col-tot-width:$grid-width - $grid-gut-tot-width - $grid-pad-tot-width;// Total width of columns
+	  		$grid-gut-width:$grid-gutter;   											// Width of each gutter 
+			$grid-col-width:$grid-col-tot-width / $grid-columns;   						// Width of each column
+			$grid-tot-width:$grid-width - $grid-pad-tot-width;
+
+	 		// If no grids exists create default
+			$grids:if(listIsEmpty($grids),list(($grid-default-name,$grid-columns)),$grids);
+	 	
+			// Create base spans and columns 
+			$grid-list:list();
+			@for $i from 1 through $grid-columns{
+				$col:(($i - 1) * $grid-col-width) + (($i - 1) * $grid-gut-width);
+				$span:($i * $grid-col-width) + (($i - 1) * $grid-gut-width);
+				$grid-list:append($grid-list,list($col,$span));
+			}
+	 	
+	 		// Loop thru breakpoints 
+			// As mediaExtend but made inline to keep all extend
+			// within the same @media 
+			@for $b from 1 through length($breakpoints){
+				$breakpoint:key($breakpoints,$b); 
+				@include media($breakpoint){;
+
+					// Greate base properties 
+					@if($breakpoint==all){
+						%#{$breakpoint}_grid_base{
+							margin-right:-100%;float:left;clear:none;position:relative;
+							&:after { content: '\0020'; display: table; clear: both; }
+						}
+					}
+
+					// Loop thru grid list 
+					@for $g from 1 through length($grids){
+						$key:key($grids,$g);
+
+						// Total grid width 
+						// (grid-base list last item second param)
+						$tot:item($grid-list,length($grid-list),2);
+
+						// Responsive grid
+						@if($grid-responsive){ 
+							// Parent wrap span adjustment. 
+							// Note! When changing a parent grid remember to
+							//       change it's nested grids too.
+							$parentSpan:keyValue($grids,$key);
+							$adj:item($grid-list, $parentSpan,2) / $tot;
+							// Create percent extends
+							@for $c from 1 through length($grid-list){
+								$col:item($grid-list,$c,1);
+								$span:item($grid-list,$c,2);
+								%#{$breakpoint+_+$key+_col_+$c} { margin-left:pct($col/$tot)*100/$adj; }
+								%#{$breakpoint+_+$key+_span_+$c}{ width:pct($span/$tot)*100/$adj; }
+							}
+						} 
+						// Pixel grid
+						@else {
+							// Create pixel extends
+							// May need pixel base value rounding (flooring)
+							@for $c from 1 through length($grid-list){
+								$col:item($grid-list,$c,1);
+								$span:item($grid-list,$c,2);
+								%#{$breakpoint+_+$key+_col_+$c} { margin-left:px($col/$tot); }
+								%#{$breakpoint+_+$key+_span_+$c}{ width:px($span/$tot); }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Extends grid base 
+	// Passing arguments will attempt to extend each argument
+	// @include gridInit('.class1','.class2')
+	@mixin gridInit(){ @extend %all_grid_base; 
+		// Does not work
+		// @if($args==null){@extend %all_grid_base;}
+		// @else { @for $i from 1 through length($args){#{nth($args,$i)}{ @extend %all_grid_base; }}}
+	} 	 
+	@function gridInit() {@return grid_base;} // Return extend base class
+	
+	@mixin grid(){}	
+	@function grid($key,$col,$span,$init:false){
+		$list:list(gridCol($key,$col),gridSpan($key,$span));
+		@if($init!=false){$list:append($list,gridInit())}
+		@return $list;
+	}
+	
+
+
+	@function gridCol($key, $col){$col:$col - ($grid-column-index - 1);@return #{$key+_col_+$col};}
+	@function gridSpan($key, $span){@return #{$key+_span_+$span};}
+	
+	// Media Grid
+	// Combines the media mixin and grid while ensuring the 
+	// right grid base extend (%all_grid_base).
+	//  
+	// .foo { @include mediaGrid(all,main,1,3,true); }
+	// .foo { @include media(all,grid(main,1,3,true)); } 
+	@mixin mediaGrid($breakpoint,$key,$col,$span,$init:false){
+		@include media($breakpoint, grid($key,$col,$span,false)){;@content;}
+		@if($init!=false){@include gridInit()};
+	}
+	
+
+
+	
+	@mixin gridClasses(){
+
+	}

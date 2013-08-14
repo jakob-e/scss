@@ -1,0 +1,72 @@
+    // ==================================================================== 
+    // frankly.core.unit.scss
+    // ==================================================================== 
+    // Functions:
+    // 
+    //      number($val); 
+    //      px($val);
+    //      em($args...);
+    //      rem($val);
+    //      pt($val);
+    //      pc($val);
+    //      in($val);
+    //      cm($val),
+    //      pct($val);
+    // 
+    // ==================================================================== 
+    // Unit Conversion Table (not including ex + %):
+    // http://www.translatorscafe.com/cafe/units-converter/typography/
+    //      1px = 0.0625pc;
+    //      1px = 0.75pt;  
+    //      1px = 0.010416667in;    
+    //      1px = 0.264583333mm;
+    //      1px = 0.026458333cm;
+    // ==================================================================== 
+    @function number($val){
+        @if($val==null){@return null}
+        $u:unit($val);
+        $u:if($u==px,1px,
+           if($u==em,1em,
+           if($u==rem,1rem,
+           if($u=='%',1%,
+           if($u==pt,1pt,
+           if($u==pc,1pc,
+           if($u==in,1in,
+           if($u==mm,1mm,
+           if($u==cm,1cm,
+           1)))))))));
+        @return $val/$u;
+    }
+    @function px($val){
+        @if($val==null){@return null}
+        $u:unit($val);
+        $u:if($u==px,1,
+           if($u==em,0.0625,
+           if($u==rem,0.0625,   
+           if($u==pt,0.75, 
+           if($u==pc,0.0625,
+           if($u==in,0.010416667,
+           if($u==mm,0.264583333, 
+           if($u==cm,0.026458333, 
+           1))))))));
+        @return number($val) / $u * 1px;
+    }
+    @function em($args...){
+        $val:nth($args,1);
+        @if($val==null){@return null}
+        $em:if(unitless($val),$val * 1em,number(px($val)) * 0.0625em);
+        @for $i from 2 through length($args){$em:$em / number(em(nth($args,$i)))}
+        @return $em;
+    }    
+    // @function em($val) { @return if(unitless($val),$val * 1em,number(px($val)) * 0.0625em); }
+    @function rem($val){ @return if($val==null,null,if(unitless($val),$val * 1rem,number(px($val)) * 0.0625rem)); }
+    @function pt($val) { @return if($val==null,null,if(unitless($val),$val * 1pt,number(px($val)) * 0.75pt)); }
+    @function pc($val) { @return if($val==null,null,if(unitless($val),$val * 1pc,number(px($val)) * 0.0625pc)); }
+    @function in($val) { @return if($val==null,null,if(unitless($val),$val * 1in,number(px($val)) * 0.010416667in)); }
+    @function mm($val) { @return if($val==null,null,if(unitless($val),$val * 1mm,number(px($val)) * 0.264583333mm)); }
+    @function cm($val) { @return if($val==null,null,if(unitless($val),$val * 1cm,number(px($val)) * 0.026458333cm)); }
+    @function pct($val){ @return if($val==null,null,number($val) * 1%); }
+    
+    
+    
+    

@@ -1,0 +1,114 @@
+    // ====================================================================  
+    // frankly.media.scss
+    // ====================================================================
+   
+   	// ==================================================================== 
+  	// Media
+  	// Creates media queries based on the $breakpoints list.
+  	// @include media can be used either as wrapper or within rules  
+  	// 
+  	// Note! - can only be passed in the within rules context   
+  	//       - content is optional when passing mediaExtends
+  	// 
+  	// -------------------------------------------------------------------
+  	// Example 1 - wrapping :
+  	// 
+  	// @include media(all){
+  	// 	.foo { content:'foo';}		
+  	// 	.bar { content:'bar';}		
+  	// }
+  	// @include media(mobile){
+  	// 	.foo { content:'bar';}		
+  	// 	.bar { content:'foo';}		
+  	// }  	
+  	// 
+  	// Output:	
+	  // @media all { 
+	  // 	.foo { content: 'foo'; }
+  	// 	.bar { content: 'bar'; } 
+  	// }
+  	// @media screen and (max-width: 480px) { 
+	  // 	.foo { content: 'bar'; }
+  	//  .bar { content: 'foo'; } 
+  	// }
+  	// 
+  	// -------------------------------------------------------------------
+  	// Example 2 - within a rule:
+  	// 
+  	// 	.foo { @include media(all){ content:'foo'; } }		
+  	// 	.bar { @include media(all){ content:'bar'; } }
+  	// 
+  	// 	.foo { @include media(mobile){ content:'bar'; } }		
+  	// 	.bar { @include media(mobile){ content:'foo'; } }
+  	// 
+  	// Output:	
+	// @media all { .foo { content: 'foo'; } }
+	// @media all { .bar { content: 'bar'; } }
+	// @media screen and (max-width: 480px) { .foo { content: 'bar'; } }
+	// @media screen and (max-width: 480px) { .bar { content: 'foo'; } }
+	// 
+	// -------------------------------------------------------------------
+  	// Example 3 - media extends: 
+  	// Look below :)
+  	// 
+  	// ==================================================================== 
+	@mixin media($key, $mediaExtends...){ // @content
+		// If a mediaExtend arguments is a list treat each item 
+		// as a single argument. Added to allow functions
+		// to return mediaExtend names (Eg. grid)
+		//
+		// Note! Consider making this an args core function
+		//
+		$extends:list();
+		@for $i from 1 through length($mediaExtends){
+			$extends:if(type-of(nth($mediaExtends,$i))==list, join($extends, nth($mediaExtends,$i)), append($extends,nth($mediaExtends,$i)));
+		}
+
+		// MediaQuery
+		$min:px(nth(keyValue($breakpoints,$key),1));
+		$max:px(nth(keyValue($breakpoints,$key),2));
+		$mq:'screen and (min-width:'+$min+') and (max-width:'+$max+')'; 
+		@if($min and $max==0px){ $mq:'screen and (min-width:'+$min+')'; }
+		@if($min==0px and $max){ $mq:'screen and (max-width:'+$max+')'; }
+		@if($min==0px and $max==0px){ $mq:'all'; }
+		// Extend 
+		@each $ext in $extends { @extend %#{$key +'_'+ $ext }; }
+		// Print
+		@media #{unquote($mq)}{ @content; }
+	}
+
+	// ==================================================================== 
+	// MediaExtend
+	// Provides a method for extending while within a @media scope.
+	//
+	// Extends are created using the $breakpoints keys as prefix/namespace. 
+	// 
+	// Use @include media(breakpointName, mediaExtendName...) to extend
+	// one or more mediaExtends
+	//
+	// Note! - can only be used within a rule (media example 2) 
+	// 		 - makes @content optional in @include media();
+	// -------------------------------------------------------------------
+	// How to example:
+	// 
+	// 1) Create the mediaExtend:
+	// 	@include mediaExtend(myMediaExtend){ content:'myMediaExtend';}
+	//
+	// 2) Use media to extend:
+	// .foo { @include media(all, myMediaExtend); }
+	// .foo { @include media(mobile, myMediaExtend); }  
+	// 
+	// 3) Output (depending on the $breakpoints list): 
+	// 	@media all { .foo { content: 'myMediaExtend'; } }
+  // 	@media screen and (max-width: 480px) { .foo { content: 'myMediaExtend'; } }
+	//
+	// ==================================================================== 
+	@mixin mediaExtend($name){ // @content
+		@for $i from 1 through length($breakpoints){
+			$key:key($breakpoints,$i); %#{$key+'_'+$name}{ @include media($key){ @content; } };
+		}
+	}
+
+
+
+

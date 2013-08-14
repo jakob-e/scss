@@ -1,0 +1,14 @@
+    // ====================================================================   
+    // frankly.utils.scss
+    // Includes utility mixins and functions
+    // ====================================================================   
+    @import '_frankly.utils.paths.scss';
+
+
+
+    @function onlyRunOnce($key){
+    	@return false;
+    	// @if(keyValue($only-run-once,$key)==null){ @return false; }
+    	// $val:keyValue($only-run-once,$key,true);
+    	// @return true; 
+    }

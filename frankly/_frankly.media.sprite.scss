@@ -1,0 +1,68 @@
+    // ====================================================================   
+    // frankly.media.sprite.scss
+  	// ==================================================================== 
+    @function breakpoint($key){
+		@for $i from 1 through length($breakpoints){ 
+			@if(nth(nth($breakpoints,$i),1)==$key){  @return nth($breakpoints,$i);  }  
+		} @return $key;
+	}
+	@mixin media($key,$extends...){
+		@if($key==all){
+			@each $ext in $extends { @extend #{'%'+$key +'_'+ $ext }; }
+			@content; 
+		}@else{
+			$min:px(nth(breakpoint($key),2)); $max:px(nth(breakpoint($key),3)); 
+			$mq:'(min-width:'+$min+') and (max-width:'+$max+')'; 
+			@if($min and $max==0px){ $mq:'(min-width:'+$min+')'; }
+			@if($min==0px and $max){ $mq:'(max-width:'+$max+')'; }
+			@if($key==all){ $mq:'fkhjsdjfhskdhjfskjhhfkjsdhfjsk'; }
+			@each $ext in $extends { @extend #{'%'+$key +'_'+ $ext }; }
+			@media screen and #{unquote($mq)}{ @content; }
+		}
+	}
+	@mixin mediaExtend($name,$all:false){
+		// Buggy all must come before any media
+		// include - Needs rework!!!!!
+		@if($all){ %#{all_+$name}{ @content; }; } 
+		@else {
+			@for $i from 1 through length($breakpoints){
+				$key:nth(nth($breakpoints,$i),1);
+				%#{$key+'_'+$name}{ @include media($key){ @content; } };
+			}
+		}
+	}
+
+
+	// 
+	@mixin Sprite(){
+		// 1.0 dpr 
+		@media all {
+			@for $i from 1 through length($sprites){$s:nth($sprites,$i);@if(length($s)>1){#{'%'+nth($s,1)}{background-image:url(nth($s,2));background-repeat:no-repeat;@if(length($s)>2){ background-size:nth($s,length($s));}};}}
+		}
+		// 1.25 dpr
+		@media (-webkit-min-device-pixel-ratio: 1.25),(min-resolution: 120dpi){
+			@for $i from 1 through length($sprites){$s:nth($sprites,$i);@if(length($s)>6 and nth($s,6)){#{'%'+nth($s,1)+'_1_25x'}{background-image:url(nth($s,6));}}}
+		}
+		// 1.3 dpr 
+		@media (-webkit-min-device-pixel-ratio: 1.3),(min-resolution: 124.8dpi){
+			@for $i from 1 through length($sprites){$s:nth($sprites,$i);@if(length($s)>5 and nth($s,5)){#{'%'+nth($s,1)+'_1_3x'}{background-image:url(nth($s,5));}}}
+		}
+		// 1.5 dpr
+		@media (-webkit-min-device-pixel-ratio: 1.5),(min-resolution: 144dpi){
+			@for $i from 1 through length($sprites){$s:nth($sprites,$i);@if(length($s)>4 and nth($s,4)){#{'%'+nth($s,1)+'_1_5x'}{background-image:url(nth($s,4));}}}
+		}
+		// // 2.0 dpr
+		@media (-webkit-min-device-pixel-ratio:2),(min-resolution: 192dpi){
+			@for $i from 1 through length($sprites){$s:nth($sprites,$i);@if(length($s)>3 and nth($s,3)){#{'%'+nth($s,1)+'_2_0x'}{background-image:url(nth($s,3));}}}
+		}
+	}
+	@mixin sprite($label, $pos:null, $extend:true){
+		background-position:$pos;
+		@if($extend){
+            @extend #{'%'+$label};
+            @extend #{'%'+$label+'_1_25x'};
+            @extend #{'%'+$label+'_1_3x'};
+            @extend #{'%'+$label+'_1_5x'};
+            @extend #{'%'+$label+'_2_0x'};
+	    }
+	}

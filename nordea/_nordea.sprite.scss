@@ -1,0 +1,70 @@
+
+	// ========================================================
+	// Nordea Sprite
+	// _nordea.sprite.scss
+	// 
+	// ========================================================
+	
+	// Nordea Icons
+	// Creates icons based on the nordea all-sprite
+	//
+	// Sample usage 
+	// 
+	// 	a { 
+	// 		display:inline-block; position:relative; padding-left:25px; vertical-align:middle; 
+	//   	&:before { @extend %nordea-icon-medium-print; position:absolute; left:0; top:0; } 
+	// 	}
+	// 
+	%nordea-sprite 							{ background:url('http://cdnnordea.com/pagetemplates/images/gfx/all-sprite.png',url) no-repeat;
+								  			  min-height: 40px; min-width: 40px; cursor:pointer; display: inline-block; content:''; }
+	%nordea-icon-people 					{ @extend %nordea-sprite; background-position:-79px 1px; &:hover { background-position: -118px 1px;}}
+	%nordea-icon-graph 						{ @extend %nordea-sprite; background-position:-80px -40px; &:hover { background-position: -119px -40px; }}
+	%nordea-icon-currency-graph 			{ @extend %nordea-sprite; background-position:-79px -81px; &:hover { background-position: -119px -81px; }}
+	%nordea-icon-tools 						{ @extend %nordea-sprite; background-position:-78px -122px; &:hover { background-position: -118px -122px; }}
+	%nordea-icon-connect 					{ @extend %nordea-sprite; background-position:-80px -164px; &:hover { background-position: -119px -164px; }}
+	%nordea-icon-chain 						{ @extend %nordea-sprite; background-position:-79px -205px; &:hover { background-position: -119px -205px; }}
+	%nordea-icon-down-arrow 				{ @extend %nordea-sprite; background-position:-79px -246px; &:hover { background-position: -119px -246px; }}
+	%nordea-icon-calculator 				{ @extend %nordea-sprite; background-position:-80px -287px; &:hover { background-position: -120px -287px; }}
+	%nordea-icon-blue-search 				{ @extend %nordea-sprite; background-position:0px -319px; 	&:hover { background-position: -45px -319px; }}
+	%nordea-icon-chat						{ @extend %nordea-sprite; background-position:-84px -2156px; &:hover { background-position: -128px -2156px; }}
+	%nordea-icon-mobile						{ @extend %nordea-sprite; background-position:-87px -2113px; &:hover { background-position: -129px -2113px; }}
+	%nordea-icon-blue-arrow 				{ @extend %nordea-sprite; background-position:-84px -2202px; &:hover { background-position: -127px -2202px; }}
+	%nordea-icon-blue-proven-preformances 	{ @extend %nordea-sprite; background-position:-84px -2244px; &:hover { background-position: -127px -2244px; }}
+	%nordea-icon-blue-webinar 				{ @extend %nordea-sprite; background-position:-84px -2287px; &:hover { background-position: -127px -2287px; }}
+	%nordea-icon-arrow 						{ @extend %nordea-sprite; background-position:0px 1px; &:hover { background-position: -41px 1px; }}
+	%nordea-icon-green-currency-graph 		{ @extend %nordea-sprite; background-position:0px -39px; &:hover { background-position: -41px -39px; }}
+	%nordea-icon-question 					{ @extend %nordea-sprite; background-position:0px -79px; &:hover { background-position: -41px -79px; }}
+	%nordea-icon-search 					{ @extend %nordea-sprite; background-position:0px -119px; &:hover { background-position: -40px -119px; }}
+	%nordea-icon-mail 						{ @extend %nordea-sprite; background-position:0px -159px; &:hover { background-position: -41px -159px; }}
+	%nordea-icon-phone 						{ @extend %nordea-sprite; background-position:0px -199px; &:hover { background-position: -40px -199px; }}
+	%nordea-icon-pen 						{ @extend %nordea-sprite; background-position:0px -239px; &:hover { background-position: -40px -239px; }}
+	%nordea-icon-green-chat					{ @extend %nordea-sprite; background-position:0px -2244px; &:hover { background-position: -41px -2244px; }}
+	%nordea-icon-green-mobile				{ @extend %nordea-sprite; background-position:0px -2113px; &:hover { background-position: -41px -2113px; }}
+	%nordea-icon-green-seealso				{ @extend %nordea-sprite; background-position:2px -2202px; &:hover { background-position: -39px -2202px; }}
+	%nordea-icon-green-visit-branch			{ @extend %nordea-sprite; background-position:1px -2156px; &:hover { background-position: -40px -2156px; }}
+	%nordea-icon-green-graph 				{ @extend %nordea-sprite; background-position:0px -2287px; &:hover { background-position: -41px -2287px; }}
+	%nordea-icon-green-tools 				{ @extend %nordea-sprite; background-position:0px -2332px; &:hover { background-position: -41px -2332px; }}
+	%nordea-icon-login-big 					{ @extend %nordea-sprite; background-position:-167px -316px; &:hover { background-position: -216px -317px; }}
+	%nordea-icon-error 						{ @extend %nordea-sprite; background-position:0px -279px; &:hover { background-position: 0px -279px; }}
+	%nordea-icon-close 						{ @extend %nordea-sprite; background-position:-43px -279px; min-height: 33px; min-width: 33px; &:hover{ background-position: -43px -279px; }}
+	%nordea-icon-lock 						{ @extend %nordea-sprite; background-position:-160px -160px; min-height: 22px; min-width: 22px; &:hover { background-position: -184px -160px; }}
+	%nordea-icon-bluelock 					{ @extend %nordea-sprite; background-position:-181px -18px; min-height: 22px; min-width: 22px; &:hover { background-position: -181px -18px; }}
+	%nordea-icon-blueclose 					{ @extend %nordea-sprite; background-position:-161px 0px; min-height: 14px; min-width: 14px; &:hover { background-position: -177px 0px; }}
+	%nordea-icon-uparrow 					{ @extend %nordea-sprite; background-position:-193px 0px; min-height: 8px; min-width: 8px; &:hover {background-position: -193px 0px; }}
+	%nordea-icon-small-down-arrow 			{ @extend %nordea-sprite; background-position:-204px 0px; min-height: 8px; min-width: 8px; &:hover { background-position: -204px 0px; }}
+	%nordea-icon-newwindow 					{ @extend %nordea-sprite; background-position:-214px 0px; min-height: 17px; min-width: 17px; &:hover { background-position: -214px 0px; }}
+	%nordea-icon-blue-new-window 			{ @extend %nordea-sprite; background-position:-233px 0px; min-height: 17px; min-width: 17px; &:hover { background-position: -233px 0px; }}
+	%nordea-icon-medium-question 			{ @extend %nordea-sprite; background-position:-202px -18px; min-height: 22px; min-width: 22px; &:hover { background-position: -227px -18px; }}
+	%nordea-icon-medium-plus 				{ @extend %nordea-sprite; background-position:-202px -44px; min-height: 22px; min-width: 22px; &:hover { background-position: -226px -43px; }}
+	%nordea-icon-medium-print 				{ @extend %nordea-sprite; background-position:-200px -200px; min-height: 22px; min-width: 22px; &:hover { background-position: -224px -200px; }}
+	%nordea-icon-medium-pdf 				{ @extend %nordea-sprite; background-position:-318px -18px; min-height: 15px; min-width: 15px; &:hover { background-position: -318px -18px; }}
+	%nordea-icon-checkmark 					{ @extend %nordea-sprite; background-position:-162px -201px; min-height: 26px; min-width: 26px; &:hover { background-position: -162px -201px; }}
+	%nordea-icon-medium-youtube 			{ @extend %nordea-sprite; background-position:-250px -18px; min-height: 18px; min-width: 18px; &:hover { background-position: -250px -18px; }}
+	%nordea-icon-medium-twitter 			{ @extend %nordea-sprite; background-position:-267px -18px; min-height: 18px; min-width: 18px; &:hover { background-position: -267px -18px; }}
+	%nordea-icon-medium-flicker 			{ @extend %nordea-sprite; background-position:-284px -18px; min-height: 18px; min-width: 18px; &:hover { background-position: -284px -18px; }}
+	%nordea-icon-medium-facebook 			{ @extend %nordea-sprite; background-position:-301px -18px; min-height: 18px; min-width: 18px; &:hover { background-position: -301px -18px; }}
+	%nordea-icon-youtube 					{ @extend %nordea-sprite; background-position:-85px -2070px; &:hover { background-position: -128px -2070px; }}
+	%nordea-icon-twitter 					{ @extend %nordea-sprite; background-position:0px -2070px; &:hover { background-position: -41px -2070px; }}
+	%nordea-icon-flicker 					{ @extend %nordea-sprite; background-position:0px -2025px; &:hover { background-position: -41px -2025px; }}
+	%nordea-icon-facebook 					{ @extend %nordea-sprite; background-position:-86px -2025px; &:hover { background-position: -129px -2025px; }}
+	%nordea-icon-linkedin 					{ @extend %nordea-sprite; background-position:-173px -2025px; &:hover { background-position: -216px -2025px; }}

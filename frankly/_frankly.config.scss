@@ -1,0 +1,60 @@
+    // ====================================================================   
+    // frankly.config.scss
+  	// Basic Configuration variables used across the frankly.framework
+  	// ====================================================================
+
+
+	// Constants
+	$SLASH:unquote('/');
+	$HASH:unquote('#');
+	$DOT:unquote('.');
+	$PCT:unquote('%');			
+	$UNDERSCORE:unquote('_');			
+	$QUEUE:0;
+	$RENDER:1;
+	$FRANKLY_FRAMEWORK_PREFIX:fw_;
+	$only-run-once:list();
+	
+	// Paths
+	$paths:list(
+	    (url,   null)
+	   ,(image, '../img/')
+	   ,(font , '../fonts/')
+    ) !default;
+    $paths-default:image !default;
+    $paths-enabled:true  !default;
+
+
+	// Dimentions
+	$base-width:960 !default;
+	$min-width:320  !default;
+	$max-width:1400 !default;
+
+
+	// Grid
+  	$grid-width:940 		!default;
+  	$grid-gutter:20  		!default;
+  	$grid-columns:12  		!default;
+  	$grid-responsive:true   !default;
+  	$grid-column-index:1  	!default;
+  	$grid-default-name:main !default;
+	$grid-padding:0  	  	!default;
+  	$grid-padding-left:0  	!default;
+  	$grid-padding-right:0 	!default;
+  	$grids:list(
+  		($grid-default-name, $grid-columns)
+  	) !default;
+	
+
+	// Media breakpoints
+	$breakpoints:list(
+		(mobile,0,480)
+	   ,(tablet,481,768)
+	   ,(desktop,769,1200)
+	   ,(large,1201,0)
+	) !default; 
+
+	// Basefont and baseline
+	$basefont:16;
+	$baseline:20;
+	

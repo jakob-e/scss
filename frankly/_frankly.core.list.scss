@@ -1,0 +1,155 @@
+    // ==================================================================== 
+    // List functions
+    // ==================================================================== 
+    // Create list - added to fix one-item-multidimensional-list "bug"
+    // -------------------------------------------------------------------
+    @function list($args...){
+        $list:();
+        @for $i from 1 through length($args){$list:append($list,nth($args,$i));};
+        @return $list;
+    };
+    
+    
+    // Find list item (including nested lists) 
+    // -------------------------------------------------------------------
+    // $list  - the list
+    // $index - index (and nested indexes) to match
+    // 
+    // $list:list(list(a,b,c),list(d,list(e1,e2,list(e3a,e3b,wally)),f)); 
+    // .item { where-is:item($list,2,2,3,3)} // .item { where-is: wally }
+    @function item($list,$index...){
+        $item:$list;
+        @for $i from 1 through length($index){$item:nth($item,nth($index,$i));};
+        @return $item;
+    }
+    
+    // Replace list item
+    // -------------------------------------------------------------------
+    // $list      - the list 
+    // $value     - new value
+    // $index - index (and nested indexes) to match
+    // 
+    // $list:list(list(a,b,c),list(d,list(e1,e2,list(e3a,e3b,wally)),f)); 
+    // .list { items:$list;}   // .list { items: a b c d e1 e2 e3a e3b wally f; }
+    // $list:replace($list,notwally,2,2,3,3); 
+    // .list { items:$list;}   // .list { items: a b c d e1 e2 e3a e3b notwally f; }
+    @function replace($list,$value,$index...){
+        $newlist:list();
+        @for $i from 1 through length($list){
+            $itm:nth($list,$i);
+            @if(nth($index,1)==$i){ 
+                @if(length($index)>1){ $itm:replace($itm,$value,slice($index,2)...); }
+                @else{ $itm:$value; }
+            } 
+            $newlist:append($newlist,$itm);
+        } @return $newlist;
+    }
+    
+    // Remove list item -  (:replace style - just nulling the value)
+    // -------------------------------------------------------------------
+    // $list      - the list 
+    // $value     - new value
+    // $index - index (and nested indexes) to match
+    // 
+    // $list:list(list(a,b,c),list(d,list(e1,e2,list(e3a,e3b,wally)),f)); 
+    // .list { items:$list;}   // .list { items: a b c d e1 e2 e3a e3b wally f; }
+    // $list:remove($list,2,2,3,3); 
+    // .list { items:$list;}   // .list { items: a b c d e1 e2 e3a e3b f; }
+    @function remove($list,$index...){
+        @return replace($list,null,$index...);
+    }
+    // @function remove($list,$index...){
+    //  $newlist:();
+    //  @for $i from 1 through length($list){
+    //      $itm:nth($list,$i);
+    //      @if(nth($index,1)==$i){ @if(length($index)>1){ $itm:remove($itm,slice($index,2)...); }@else{ $itm:null; } } 
+    //      $newlist:append($newlist,$itm);
+    //  } @return $newlist;
+    // }
+    
+    // List slice (js style)
+    // -------------------------------------------------------------------
+    @function slice($list,$start,$end:null){
+        $newlist:list();
+        $end:if($end==null,length($list),$end); 
+        @for $i from $start through $end{$newlist:append($newlist,nth($list,$i));};
+        @return $newlist;
+    }
+    
+    // Prepend (:append style)
+    // -------------------------------------------------------------------
+    @function prepend($list,$value,$separator:auto){
+        $newlist:list($value);
+        @for $i from 1 through length($list){$newlist:append($newlist,nth($list,$i),$separator);};
+        @return $newlist;
+    }
+    
+    @function set-nth($list,$n,$value){
+        $newlist:list();
+        @for $i from 1 through max($n,length($list)) {
+            @if($i==$n){ $newlist:append($newlist, $value);} 
+            @else{
+                @if(length($list) >= $i) {$newlist:append($newlist, nth($list, $i));} 
+                @else{ $newlist:append($newlist, null);}
+            }
+        } @return $new_list;
+    }
+    
+    // Check if a list is empty
+    @function listIsEmpty($list){
+        @return $list==list();
+    }
+    
+    
+    // Key      - Returns a key based on index ()
+    // KeyValue - Simple key/value paired list 
+    // Added while waiting for a SCSS map method
+    // -------------------------------------------------------------------
+    // $list      - the list 
+    // $key       - key  
+    // $value...  - value (omit to return key value)
+    //              if multiple values are passed a 
+    //              get call will return a list
+    // 
+    // $list:key(list(),foo,(a,b,c));     // Add key foo - passing an empty list
+    // $list:key($list,bar,0);            // Add key bar - using $list 
+    // $list:key($list,bar,1000000);      // Update key bar
+    // .list { items:$list; }             // .list { items: foo a, b, c bar 1000000; }  
+    // .foo  { keyvalue:key($list,foo); } // .foo { keyvalue: a, b, c; }
+    // .bar  { keyvalue:key($list,bar); } // .bar { keyvalue: 1000000; }
+    // 
+    // To create multiple keys at once - use the list function:
+    // $list:list(
+    //      (foo,(a,b,c)),
+    //      (bar,1000000)
+    //  );   
+    //
+    @function key($list,$index){ @return nth(nth($list,$index),1); } 
+    @function keyValue($list,$key,$value...){
+        @if(length($value)==0 or $value==null){ 
+            // get method - returns value, value list or null
+            @for $i from 1 through length($list){ 
+                @if(key($list,$i)==$key){$v:slice(nth($list,$i),2); @return if(length($v)==1 and type-of(nth($v,1))!=list,nth($v,1),$v);}
+            }
+        } @else { 
+            // set method - returns updated list (3 arguments)
+            // Update existing key or create new key 
+            @for $i from 1 through length($list){ @if(key($list,$i)==$key){ $list:replace($list,$value,list($i,2)); @return $list; } } 
+            $list:append($list,list($key,$value));
+            @return $list;
+        } @return null; 
+    }
+    // Dash syntax
+    @function key-value($list,$key,$value...){@return keyValue($list,$key,$value);}
+    
+    
+    // Inserts lists passed thru arguments as a part of the arguments
+    @function argsFlatten($args...){
+        $arglist:list();
+        @for $i from 1 through length($args){
+            $arglist:if(type-of(nth($args,$i))==list,join($arglist,nth($args,$i)),append($arglist,nth($args,$i)));
+        }
+    }
+    
+
+ 
