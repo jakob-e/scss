@@ -13,25 +13,28 @@
     // -------------------------------------------------------------------
     // 
     // ==================================================================== 
-	@mixin media($key){ // @content
-		$min:px(nth(keyValue($breakpoints,$key),1));
-		$max:px(nth(keyValue($breakpoints,$key),2));
-		$mq:'screen and (min-width:'+$min+') and (max-width:'+$max+')'; 
-		@if($min and $max==0px){ $mq:'screen and (min-width:'+$min+')'; }
-		@if($min==0px and $max){ $mq:'screen and (max-width:'+$max+')'; }
-		@if($min==0px and $max==0px){ $mq:'all'; }
-		@media #{unquote($mq)}{ @content; }
-	}
+    @mixin media($key){ // @content
+        $min:px(nth(keyValue($breakpoints,$key),1));
+        $max:px(nth(keyValue($breakpoints,$key),2));
+        $mq:'screen and (min-width:'+$min+') and (max-width:'+$max+')'; 
+        @if($min and $max==0px){ $mq:'screen and (min-width:'+$min+')'; }
+        @if($min==0px and $max){ $mq:'screen and (max-width:'+$max+')'; }
+        @if($min==0px and $max==0px){ $mq:'all'; }
+        @media #{unquote($mq)}{ @content; }
+    }
 
-	// ==================================================================== 
-	// MediaExtend
-	// Provides a method for extending while within a @media scope.
-	//
-	// ==================================================================== 
-	@mixin mediaExtend(){ // @content
-		@for $i from 1 through length($breakpoints){
-			$key:key($breakpoints,$i);
-			@include media($key){ @content; };
-		}
-	}
+    // ==================================================================== 
+    // MediaExtend
+    // Provides a method for extending while within a @media scope.
+    //
+    // ==================================================================== 
+    @mixin mediaExtend(){ // @content
+        @for $i from 1 through length($breakpoints){
+            $key:key($breakpoints,$i);
+            @include media($key){ @content; };
+        }
+    }
+
+
+
 
