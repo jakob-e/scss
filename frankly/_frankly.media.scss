@@ -2,18 +2,17 @@
     // frankly.media.scss
     // ====================================================================
    
-   	// ==================================================================== 
-  	// Media
-  	// Creates media queries based on the $breakpoints list.
-  	// @include media can be used either as wrapper or within rules  
-  	// 
-  	// Note! - can only be passed in the within rules context   
-  	//       - content is optional when passing mediaExtends
-  	// 
-  	// -------------------------------------------------------------------
+    // ==================================================================== 
+    // Media
+    // Creates media queries based on the $breakpoints list.
+    // @include media can be used either as wrapper or within rules  
     // 
-  	// ==================================================================== 
-	
+    // Note! - can only be passed in the within rules context   
+    //       - content is optional when passing mediaExtends
+    // 
+    // -------------------------------------------------------------------
+    // 
+    // ==================================================================== 
 	@mixin media($key){ // @content
 		$min:px(nth(keyValue($breakpoints,$key),1));
 		$max:px(nth(keyValue($breakpoints,$key),2));
