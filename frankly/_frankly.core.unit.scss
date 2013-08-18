@@ -23,7 +23,7 @@
     //      1px = 0.026458333cm;
     // ==================================================================== 
     @function number($val){
-        @if($val==null){@return null}
+        @if($val==null){@return null; }
         $u:unit($val);
         $u:if($u==px,1px,
            if($u==em,1em,
@@ -38,7 +38,7 @@
         @return $val/$u;
     }
     @function px($val){
-        @if($val==null){@return null}
+        @if($val==null){@return null; }
         $u:unit($val);
         $u:if($u==px,1,
            if($u==em,0.0625,
@@ -53,7 +53,7 @@
     }
     @function em($args...){
         $val:nth($args,1);
-        @if($val==null){@return null}
+        @if($val==null){@return null; }
         $em:if(unitless($val),$val * 1em,number(px($val)) * 0.0625em);
         @for $i from 2 through length($args){$em:$em / number(em(nth($args,$i)))}
         @return $em;
