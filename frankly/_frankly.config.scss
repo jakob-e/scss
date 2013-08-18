@@ -30,6 +30,14 @@
 	$min-width:320  !default;
 	$max-width:1400 !default;
 
+	// Media breakpoints
+	$breakpoints:list(
+	    (all,0,0)
+	   ,(mobile,0,480)
+	   ,(tablet,481,768)
+	   ,(desktop,769,1200)
+	   ,(large,1201,0)
+	) !default; 
 
 	// Grid
   	$grid-width:940 	!default;
@@ -46,14 +54,7 @@
   	) !default;
 	
 
-	// Media breakpoints
-	$breakpoints:list(
-	    (all,0,0)
-	   ,(mobile,0,480)
-	   ,(tablet,481,768)
-	   ,(desktop,769,1200)
-	   ,(large,1201,0)
-	) !default; 
+
 
 	// Basefont and baseline
 	$basefont:16;
