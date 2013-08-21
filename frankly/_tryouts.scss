@@ -40,6 +40,45 @@
     
     
     
-    
-    
+    // ====================================================================
+    // Aspect ratio
+    // 
+    //  <div class="aspect-wrap">
+    //      <div class="content"></div>
+    //  </div>
+    // 
+    //  .aspect-wrap { @include aspect-ratio(9 / 16); width:50%; }
+    //  .aspect-wrap { @include aspect-ratio(56.25%); width:50%; }
+    //
+    //    
+    //     1:1    = 100%;
+    //     2:1    = 50%;
+    // 
+    //  Film aspect ratios
+    //  http://upload.wikimedia.org/wikipedia/commons/a/ac/Filmaspectratios_svg.svg
+    //  ---------------------------------------------
+    //     4:3    = 75%;        Standard video
+    //  1.66:1    = 60.241%     EU - theater
+    //    16:9    = 56.250%     HD video
+    //  1.85:1    = 54.054%     US - theater
+    //  2.39:1    = 41.841%     Widescreen
+    //  2.75:1    = 36.364%     Ultra-Panavision
+    //  4.00:1    = 25%           
+    // 
+    // ====================================================================
+    @mixin aspect-ratio($ratio-percent){
+        // Wrapper
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        &:before { padding-top:pct($ratio-percent); }
+        // Content
+        > * { position: absolute; top: 0; left: 0; bottom: 0; right: 0; }
+    }
+
+
+
+
+
+
     
