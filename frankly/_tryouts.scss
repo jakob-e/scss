@@ -71,11 +71,15 @@
         position: relative;
         display: inline-block;
         vertical-align: top;
-        &:before { padding-top:pct($ratio-percent); }
+        &:before { 
+            padding-top:pct($ratio-percent); 
+            content: '';
+            display: block;            
+        }
         // Content
         > * { position: absolute; 
               top: 0; left: 0; bottom: 0; right: 0; 
-            }
+        }
     }
 
 
