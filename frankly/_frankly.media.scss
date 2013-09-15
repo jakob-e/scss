@@ -33,5 +33,64 @@
     }
 
 
-
-
+    // ==================================================================== 
+    // mediaExtend  
+    // ==================================================================== 
+    // Prevent multiple instantiations
+    $media-extend-first-run:true !default;
+    @mixin mediaExtend-back-to-hack($args...){ 
+    
+        // Arguments passed => extend
+        @if(length($args)>0){
+            // Loop thru arguments to see if any matches a key in the breakpoints list 
+            // - if found add to keys list
+            $keys:();
+            @for $i from 1 through length($args){
+                @for $j from 1 through length($breakpoints){
+                    @if(nth(nth($breakpoints,$j),1)==nth($args,$i)){ 
+                        $keys:append($keys,nth($args,$i)); 
+                    }
+                }
+            }
+            // If no breakpoints were passed we'll extend all items in the breakpoints list. 
+            // Note! if we are calling from inside a media directive non valid attempts will fail 
+            // - leaving only the one matching the directive we are in.
+            $keys:if($keys==(),$breakpoints,$keys);
+            @for $i from 1 through length($args){
+                @for $j from 1 through length($keys){
+                    $key:nth(nth($keys,$j),1);
+                    @extend %#{$key+'_'+ nth($args,$i)} 
+                }
+            }  
+        }
+    
+        // No arguments => create extends 
+        @else if $media-extend-first-run {
+            $media-extend-first-run:false;
+            // Loop thru breakpoints
+    
+            @for $i from 1 through length($breakpoints){
+                $key:nth(nth($breakpoints,$i),1);
+    
+                // 1 Place extends within a media directive
+                // 2 Prefix extends to avoid conflicts
+                @include media($key){
+                    // ==================================
+                    // Add your all your extends here 
+                    // %#{$key+_+ EXTEND_NAME }{ ... }
+                    // ==================================       
+    
+                    %#{$key+_+ foo }{ content:'foo'; }
+                    %#{$key+_+ bar }{ content:'bar'; }
+                    %#{$key+_+ doh }{ content:'doh'; }
+    
+                }
+            }
+        } 
+    }
+    // @include mediaExtend-back-to-hack(); // Create extends
+    // Work on a mixin to handle this in framework context
+    
+    
+    
+    
