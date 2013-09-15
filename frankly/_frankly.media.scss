@@ -1,7 +1,17 @@
     // ====================================================================  
     // frankly.media.scss
     // ====================================================================
-   
+    $MEDIA_ALL:all !default;
+    $MEDIA_DESKTOP:desktop !default;
+    $MEDIA_TABLET:tablet !default;
+    $MEDIA_MOBILE:mobile !default;
+
+    $breakpoints:list( 
+        ($MEDIA_ALL,0,0)
+        ,($MEDIA_DESKTOP,769,0)
+        ,($MEDIA_TABLET,481,768)
+        ,($MEDIA_MOBILE,0,480)
+    ) !default;
     // ==================================================================== 
     // Media
     // Creates media queries based on the $breakpoints list.
