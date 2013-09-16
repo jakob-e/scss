@@ -88,11 +88,12 @@
                     // ==================================
                     // Add your all your extends here 
                     // %#{$key+_+ EXTEND_NAME }{ ... }
-                    // ==================================       
-    
-                    %#{$key+_+ foo }{ content:'foo'; }
-                    %#{$key+_+ bar }{ content:'bar'; }
-                    %#{$key+_+ doh }{ content:'doh'; }
+                    // ==================================
+                    $p:'%'+$key;     
+                    @include mediaExtendQueue($p);
+                    // %#{$key+_+ foo }{ content:'foo'; }
+                    // %#{$key+_+ bar }{ content:'bar'; }
+                    // %#{$key+_+ doh }{ content:'doh'; }
     
                 }
             }
@@ -100,7 +101,9 @@
     }
     // @include mediaExtend-back-to-hack(); // Create extends
     // Work on a mixin to handle this in framework context
-    
+    @mixin mediaExtendQueue($prefix){
+        #{$prefix + 'EXTEND_NAME' } { .... }
+    }
     
     
     
