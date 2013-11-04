@@ -1,31 +1,27 @@
-    // ====================================================================  
-    // frankly.utils.paths.scss
-    // ==================================================================== 	
-    // Overrides the url() of eg. background-image:url('...');
-    // Syntax url([pathtype],src)
-    // If pathtype is omitted and paths are enabled
-    // type becomes paths-default
-    // 
-    // Example:  
-    // 	$path:list(
-	// 		 (url,'')
-	// 		,(image,'../img/')
-	// 		,(font,'../fonts/')
-	// 	);	
-	//  $paths-enabled=true;
-	//  $paths-default=image; 
-	// 
-    // 	background:url('myimage.png'); 		 // background:url(../img/myimage.png);  
-    // 	background:url(image,'myimage.png'); // background:url(../img/myimage.png); 
-    // 	src:url(font,'mywebfont.eot'); 		 // src:url(../fonts/mywebfont.eot); 
-    // 
-    @function url($args...){
-       $i:if(length($args)==2,2,1);	
-       $src:nth($args,$i);
-       $type:if($i==2,nth($args,1),$paths-default);
-       $path:if($paths-enabled==false,'',if(keyValue($paths,$type),keyValue($paths,$type),'')); 
-       @return unquote('url(' + $path+$src + ')');
-    }
-
-
-
+    //=========================================================================
+    // Paths
+    // - Simple centralized path control
+    //=========================================================================
+    // Set default path  - if no path is provided
+    // Enable paths - if false url(...) will work as normal
+    $paths-default:images !default;
+    $paths-enabled:true   !default;
+    // Override CSS url(...)   
+    @function url($src, $path:$paths-default){
+        @if($paths-enabled){
+            @for $p from 1 through length($paths){
+                @if(nth(nth($paths,$p),1)==$path){
+                    @return unquote('url('+nth(nth($paths,$p),2)+$src+')');
+                }
+            }
+        }
+        @return unquote('url('+$src+')'); // Disabled, wrong or nulll 
+    } 
+    
+    // SCSS 3.3.0 - Map version
+    // @function url($src, $path:$paths-default){
+    //    @if($paths-enabled and map-has-key($paths,$path)){ 
+    //        @return unquote('url('+map-get($paths,$path)+ $src+')'); 
+    //    }
+    //    @return unquote('url('+$src+')'); // Disabled, wrong or nulll 
+    // } 
