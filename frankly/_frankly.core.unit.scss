@@ -95,10 +95,9 @@
     // Aliases  
     @function num($val){ @return number($val); }
     @function parseFloat($val) { @return number($val);} // Really a math thing
-    @function parseInt($val) { @return int($val); }     // Really a math thing
+    @function parseInt($val) { @return int($val); }   // Really a math thing
     
-  
-    // Absolute lengths
+    // Absolute lengths 
     @function px($val){ @return unit-handler($val,0px); }
     @function pt($val){ @return unit-handler($val,0pt); }
     @function pc($val){ @return unit-handler($val,0pc); }
@@ -113,18 +112,17 @@
         $em:0em  + if(unitless($val), $val, number(px($val)) * 0.0625 * 100% / $base-font-scale); 
         @for $i from 2 through length($args){ $em:$em / number(em(nth($args,$i))) }
         @return $em;
-    } 
+    }
+    @function pct($val,$base:1){ @return if(isNaN($val), null, percentage(number(px($val))/number(px($base)))); }
 
-    // Unit handling
+
+    // Length unit handler
     @function unit-handler($val,$unit){
         @if($val==null or type-of($val)!=number){ @return null; }
         $u:unit($val);
         @if($u==rem or $u==em){ @return 0px + number($val) / 0.0625 * 100% / $base-font-scale }
         @return $unit + $val;
     }
-    
-    // Percent
-    @function pct($val,$base:1){ @return if(isNaN($val), null, percentage(number(px($val))/number(px($base)))); }
 
     
     // Angle conversion using deg as base
@@ -142,4 +140,23 @@
     @function turn($val){ @return if(isNaN($val),null,if(unitless($val),$val * 1turn,number(deg($val)) * 0.002777778turn)); } 
     @function rad($val) { @return if(isNaN($val),null,if(unitless($val),$val * 1rad ,number(deg($val)) * 0.017453293rad)); }
   
-  
+    // Convert using unit parameter
+    @function convert($unit,$args...){
+        @if($unit==number){ @return number($args...); }
+        @if($unit==num) { @return num($args...); }
+        @if($unit==int) { @return int($args...); }
+        @if($unit==uint){ @return uint($args...);}
+        @if($unit==px)  { @return px($args...);  }
+        @if($unit==pt)  { @return pt($args...);  }
+        @if($unit==pc)  { @return pc($args...);  }
+        @if($unit==in)  { @return in($args...);  }
+        @if($unit==mm)  { @return mm($args...);  }
+        @if($unit==cm)  { @return cm($args...);  }
+        @if($unit==em)  { @return em($args...);  }
+        @if($unit==rem) { @return rem($args...); }
+        @if($unit==pct) { @return pct($args...); }
+        @if($unit==deg) { @return int($args...); }
+        @if($unit==grad){ @return grad($args...);}
+        @if($unit==turn){ @return turn($args...);}
+        @if($unit==rad) { @return rad($args...); }
+    }
